@@ -1,19 +1,21 @@
 from bs4 import BeautifulSoup   # nice representation of the DOM
-# from libmproxy.protocol.http import decoded
-# from mitmproxy import ctx
-
-
-class Proxy:
-    def __init__(self, script):
-        self.script = script
-
-    def response(self, context, flow):
-        html = BeautifulSoup(flow.response.context)
-        context.log(html)
+from netlib.http import decoded
 
 
 def start(context, argv):
-    # ctx.log.info("Script loaded")
     if len(argv) < 2:
         raise ValueError("Script name must be provided as the first parameter")
-    return Proxy(argv[1])
+    context.script = argv[1]
+
+
+def response(context, flow):
+    if flow.request.host in context.script:
+        return  # Make sure JS isn't injected to itself
+    with decoded(flow.response):
+        html = BeautifulSoup(flow.response.content)
+        if html.body and ('text/html' in flow.response.headers["content-type"]):     # inject only for HTML resources
+            script = html.new_tag("script", type="application/javascript")
+            script.insert(0, "alert('Hello world')")
+            html.body.insert(0, script)
+            flow.response.content = str(html)
+            context.log("script injected")
