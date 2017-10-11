@@ -13,9 +13,14 @@ def response(context, flow):
         return  # Make sure JS isn't injected to itself
     with decoded(flow.response):
         html = BeautifulSoup(flow.response.content)
-        if html.body and ('text/html' in flow.response.headers["content-type"]):     # inject only for HTML resources
+        if html.body and ("text/html" in flow.response.headers["content-type"]):     # inject only for HTML resources
             script = html.new_tag("script", type="application/javascript")
-            script.insert(0, "alert('Hello world')")
+            script.insert(0, read_file(context.script))
             html.body.insert(0, script)
             flow.response.content = str(html)
             context.log("script injected")
+
+
+def read_file(filename):
+    with open(filename) as f:
+        return f.read()
