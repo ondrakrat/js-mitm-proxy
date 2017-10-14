@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Websocket test</title>
+</head>
+<body>
+<h1>WebSocket test</h1>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="application/javascript">
+    (function () {
+//        let websocket = new WebSocket("ws://localhost:5000/ws", "protocol");
+//        console.log("websocket created");
+//        websocket.onopen = function(event) {
+//            console.log("websocket opened");
+//            websocket.send("Hey there, wanna know some passwords?");
+//            console.log("message sent");
+//        };
+        let socket = io.connect('http://localhost:5000/ws');
+        socket.on('my response', function(data) {
+            console.log(data);
+        });
+        socket.on('connect', function () {
+            console.log("connected");
+            socket.emit('my event', {data: 'I\'m connected!'});
+        });
+    }());
+</script>
+</body>
+</html>
