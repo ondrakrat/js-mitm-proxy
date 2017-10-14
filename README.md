@@ -18,7 +18,7 @@ If you want to modify the requests via script, do the following instead of the l
 #### Python WebSocket server
 Install required packages: `pip install flask flask_socketio gevent gevent-websocket` and run the server 
 with `python websocket_server.py`. The server runs on `https://localhost:5000`, websocket is exposed at 
-`wss://localhost:5000/ws`. WSS hack: allow mixed content in browser.
+`localhost:5000/ws`. WSS hack: allow mixed content in browser.
 
 ## Useful links
 * https://mitmproxy.org/
