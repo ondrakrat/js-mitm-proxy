@@ -9,7 +9,6 @@ def start(context, argv):
 
 
 def response(context, flow):
-    context.log("a")
     if flow.request.host in context.script:
         return  # Make sure JS isn't injected to itself
     with decoded(flow.response):

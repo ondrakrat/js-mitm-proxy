@@ -6,8 +6,8 @@ Example of JS injection using Man-in-the-middle proxy
 * Setup browser to use proxy `localhost:port_number` (for all types of requests)
 * Setup port forwarding from port 80 and 443 to `port_number`
   * `sudo sysctl -w net.ipv4.ip_forward=1`
-  * `sudo iptables -t nat -A PREROUTING -i wlan1 -p tcp --dport 80 -j REDIRECT --to-port 8080`
-  * `sudo iptables -t nat -A PREROUTING -i wlan1 -p tcp --dport 443 -j REDIRECT --to-port 8080`
+  * `sudo iptables -t nat -A PREROUTING -i wlan1 -p tcp --dport 80 -j REDIRECT --to-port 5000`
+  * `sudo iptables -t nat -A PREROUTING -i wlan1 -p tcp --dport 443 -j REDIRECT --to-port 5000`
 * Start MITM proxy with `mitmproxy -p port_number`
 
 At this moment, you can already sniff all communication through the proxy in a neat CLI.
