@@ -15,6 +15,11 @@ At this moment, you can already sniff all communication through the proxy in a n
 If you want to modify the requests via script, do the following instead of the last step:
 * Start MITM proxy with `mitmdump -p port_number -s script.py`
 
+If your python scripts takes any arguments (such as [inject_script.py](src/inject_script.py)), append the 
+`mitmdump` command with the path to the _JS_ script and enclose it with quotes:
+
+`mitmdump -p 8888 -s "src/inject_script.py src/js/alert.js"`
+
 #### Python WebSocket server
 Install required packages: `pip install flask flask_socketio gevent gevent-websocket` and run the server 
 with `python websocket_server.py`. The server runs on `https://localhost:5000`, websocket is exposed at 
